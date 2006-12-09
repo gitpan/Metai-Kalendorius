@@ -1,0 +1,7 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Metai/Kalendorius.pm
+t/Metai-Kalendorius.t
+META.yml                                 Module meta-data (added by MakeMaker)
