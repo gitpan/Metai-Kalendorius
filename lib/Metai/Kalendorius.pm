@@ -1,22 +1,25 @@
- ###################################
-#										#
-#	Copyleft by algirdas @ perl.lt					#
-#										#
-#	This package is free software; you can redistribute it	#
-#	and/or modify it under the same terms as Perl itself.	#
-#										#
- ###################################
+ #######################################################################
+#				                                        #
+#	Copyleft by algirdas @ perl.lt				        #
+#								        #
+#	This package is free software; you can redistribute it	        #
+#	and/or modify it under the same terms as Perl itself.	        #
+#								        #
+ #######################################################################
 
 package Metai::Kalendorius;
 use strict;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 =head1 NAME
 
+
 Metai::Kalendorius - Lithuanian calendar.
 
+
 =head1 SYNOPSIS
+
 
 	 use Metai::Kalendorius;
 	 use POSIX qw(strftime);
@@ -27,26 +30,54 @@ Metai::Kalendorius - Lithuanian calendar.
 	 print Metai::Kalendorius->zodiakas($data,'www');
 	 print Metai::Kalendorius->metu_laikas($data,'utf-8');
 	 print Metai::Kalendorius->menuo($data,'www');
+         print Metai::Kalendorius->diena($data,'www');
+
 
 =head1 DESCRIPTION
 
-This module provides subroutines that return Lithuanian day-names/zodiac name/time of year name/month name, based on date.
+
+This module provides subroutines that return Lithuanian day-names/zodiac name/time of year name/month name/day name, based on date.
 Each of those can be returned in utf-8 (default) encoding and "www" type (f.e. Vai&#154;vilas).
 
+
 =head2 vardai
+
+
 Lithuanian day-names:			Metai::Kalendorius->vardai('2006.12.22');
+
+
 =head2 zodiakas
+
+
 Lithuanian zodiac name:			Metai::Kalendorius->zodiakas('2006.12.22');
+
+
 =head2 metu_laikas
+
+
 Lithuanian time of year name:	Metai::Kalendorius->metu_laikas('2006.12.22');
+
+
 =head2 menuo
+
+
 Lithuanian month name:			Metai::Kalendorius->menuo('2006.12.22');
+
+
+=head2 diena
+
+
+Lithuanian day name:                  Metai::Kalendorius->diena('2006.12.22');
+
 
 =head1 AUTHOR
 
+
 Algirdas R. E<lt>algirdas@perl.ltE<gt>
 
+
 =cut
+
 
 sub vardai {
  my ($metai,$menuo,$diena,$koduote) = tikrinimas($_[1],$_[2]);
@@ -489,16 +520,52 @@ sub menuo {
  elsif ($menuo == 2)  { $men_pav = 'Vasaris'; }
  elsif ($menuo == 3)  { $men_pav = 'Kovas'; }
  elsif ($menuo == 4)  { $men_pav = 'Balandis'; }
- elsif ($menuo == 5)  { $men_pav = 'Geguze'; }
- elsif ($menuo == 6)  { $men_pav = 'Birzelis'; }
+ elsif ($menuo == 5)  { $men_pav = 'Gegu&#0380;&#0279;'; }
+ elsif ($menuo == 6)  { $men_pav = 'Bir&#0380;elis'; }
  elsif ($menuo == 7)  { $men_pav = 'Liepa'; }
- elsif ($menuo == 8)  { $men_pav = 'Rugpjutis'; }
- elsif ($menuo == 9)  { $men_pav = 'Rugsejis'; }
+ elsif ($menuo == 8)  { $men_pav = 'Rugpj&#0363;tis'; }
+ elsif ($menuo == 9)  { $men_pav = 'Rugs&#0279;jis'; }
  elsif ($menuo == 10) { $men_pav = 'Spalis'; }
  elsif ($menuo == 11) { $men_pav = 'Lapkritis'; }
  elsif ($menuo == 12) { $men_pav = 'Gruodis'; }
  
  return (duomenu_isvedimas($men_pav,$koduote));
+}
+
+sub diena {
+ my ($metai,$menuo,$diena,$koduote) = tikrinimas($_[1],$_[2]);
+
+ my $MDS= ($metai-1)*365  + abs(($metai-1)/4) + ($menuo-1)*30;
+ my $X = 0;
+ my $i;
+ for ($i = 1; $i<=($menuo - 1); $i++) {
+ $X++;
+  if ($X =~ /^(1|3|5|7|8|10|12)$/) { $MDS++; }
+  elsif ($X==2) {
+   if ($metai/4  =~ /^\d+$/) {
+    if($metai>1752) {
+     if ($metai/100 =~ /^\d+$/) {
+     $MDS=$MDS-2;
+     if ($metai==2000) { $MDS++; }
+     }
+    else { $MDS--; }
+  }
+  else { $MDS--; }
+  }
+  else { $MDS=$MDS-2; }
+}
+}
+ $MDS=($MDS + ($diena-1)) % 7;
+ my $dien_pav;
+ if ($MDS == 1) { $dien_pav = 'Pirmadienis'; }
+ if ($MDS == 2) { $dien_pav = 'Antradienis'; }
+ if ($MDS == 3) { $dien_pav = 'Tre&#0268;iadienis'; }
+ if ($MDS == 4) { $dien_pav = 'Ketvirtadienis'; }
+ if ($MDS == 5) { $dien_pav = 'Penktadienis'; }
+ if ($MDS == 6) { $dien_pav = '&#0352;e&#0353;tadienis'; }
+ if ($MDS == 7) { $dien_pav = 'Sekmadienis'; }
+
+ return (duomenu_isvedimas($dien_pav,$koduote));
 }
 
 sub tikrinimas {

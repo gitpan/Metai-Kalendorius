@@ -9,3 +9,4 @@ WriteMakefile(
 	(ABSTRACT_FROM  => 'lib/Metai/Kalendorius.pm',
 	 AUTHOR         => 'Algirdas Rokas <algirdas@perl.lt>') : ()),
 );
+

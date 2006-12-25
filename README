@@ -4,7 +4,7 @@ Metai::Kalendorius - Lithuanian calendar.
 
 DESCRIPTION
 
-This module provides subroutines that return Lithuanian day-names/zodiac name/time of year name/month name, based on date.
+This module provides subroutines that return Lithuanian day-names/zodiac name/time of year name/month name/day name, based on date.
 Each of those can be returned in utf-8 (default) encoding and "www" type (f.e. Vai&#154;vilas).
 
 INSTALLATION
