@@ -10,7 +10,7 @@
 package Metai::Kalendorius;
 use strict;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 =head1 NAME
 
@@ -555,7 +555,7 @@ sub diena {
   else { $MDS=$MDS-2; }
 }
 }
- $MDS=($MDS + ($diena-1)) % 7;
+ $MDS=($MDS + $diena) % 7;
  my $dien_pav;
  if ($MDS == 1) { $dien_pav = 'Pirmadienis'; }
  if ($MDS == 2) { $dien_pav = 'Antradienis'; }
