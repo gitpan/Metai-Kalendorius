@@ -10,7 +10,7 @@
 package Metai::Kalendorius;
 use strict;
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 
 =head1 NAME
 
@@ -485,10 +485,10 @@ sub zodiakas {
  my $data = "$menuo.$diena";
  if    ($data =~ /^((12.2[2-9])|(12.3[0,1])|(1.[1-9])|(1.1[0-9])|(1.20))$/) { $zodiakas = 'O&#0380;iaragis'; } # 12.22-01.20
  elsif ($data =~ /^((1.2[1-9])|(1.3[0,1])|(2.[1-9])|(2.1[0-9]))$/){ $zodiakas = 'Vandenis'; } # 01.21-02.19
- elsif ($data =~ /^((2.2[0-9])|(3.[1-9])|(3.20))$/) { $zodiakas = 'Zuvys'; } # 02.20-03.20
+ elsif ($data =~ /^((2.2[0-9])|(3.[1-9])|(3.20))$/) { $zodiakas = '&#0381;uvis'; } # 02.20-03.20
  elsif ($data =~ /^((3.2[1-9])|(3.[0,1])|(4.[1-9])|(4.1[0-9])|(4.20))$/) { $zodiakas = 'Avinas'; } # 03.21-04.20
  elsif ($data =~ /^((4.2[1-9])|(4.30)|(5.[1-9])|(5.1[0-9])|(5.2[0-2]))$/) { $zodiakas = 'Jautis'; } # 04.21-05.22
- elsif ($data =~ /^((5.2[3-9])|(5.3[0,1])|(6.[1-9])|(5.1[0-9])|(5.2[0,1]))$/) { $zodiakas = 'Dvyniai'; } # 05.23-06.21
+ elsif ($data =~ /^((5.2[3-9])|(5.3[0,1])|(6.[1-9])|(5.1[0-9])|(5.2[0,1]))$/) { $zodiakas = 'Dvynys'; } # 05.23-06.21
  elsif ($data =~ /^((6.2[2-9])|(6.30)|(7.[1-9])|(7.1[0-9])|(7.2[0-2]))$/) { $zodiakas = 'V&#0279;&#0380;ys'; } # 06.22-07.22
  elsif ($data =~ /^((7.2[3-9])|(7.3[0,1])|(8.[1-9])|(8.1[0-9])|(8.2[0-2]))$/) { $zodiakas = 'Li&#0363;tas'; } # 07.23-08.22
  elsif ($data =~ /^((8.2[3-9])|(8.3[0,1])|(9.[1-9])|(9.1[0-9])|(9.2[0-2]))$/) { $zodiakas = 'Mergel&#0279;'; } # 08.23-09.22
@@ -534,36 +534,16 @@ sub menuo {
 
 sub diena {
  my ($metai,$menuo,$diena,$koduote) = tikrinimas($_[1],$_[2]);
-
- my $MDS= ($metai-1)*365  + abs(($metai-1)/4) + ($menuo-1)*30;
- my $X = 0;
- my $i;
- for ($i = 1; $i<=($menuo - 1); $i++) {
- $X++;
-  if ($X =~ /^(1|3|5|7|8|10|12)$/) { $MDS++; }
-  elsif ($X==2) {
-   if ($metai/4  =~ /^\d+$/) {
-    if($metai>1752) {
-     if ($metai/100 =~ /^\d+$/) {
-     $MDS=$MDS-2;
-     if ($metai==2000) { $MDS++; }
-     }
-    else { $MDS--; }
-  }
-  else { $MDS--; }
-  }
-  else { $MDS=$MDS-2; }
-}
-}
- $MDS=($MDS + $diena) % 7;
+ my %m=(1,0,2,3,3,2,4,5,5,0,6,3,7,5,8,1,9,4,10,6,11,2,12,4,);
+ my $MDS = (($diena+$m{$menuo}+$metai+(int($metai/4))-(int($metai/100))+(int($metai/400)))%7);
  my $dien_pav;
  if ($MDS == 1) { $dien_pav = 'Pirmadienis'; }
- if ($MDS == 2) { $dien_pav = 'Antradienis'; }
- if ($MDS == 3) { $dien_pav = 'Tre&#0269;iadienis'; }
- if ($MDS == 4) { $dien_pav = 'Ketvirtadienis'; }
- if ($MDS == 5) { $dien_pav = 'Penktadienis'; }
- if ($MDS == 6) { $dien_pav = '&#0352;e&#0353;tadienis'; }
- if ($MDS == 7) { $dien_pav = 'Sekmadienis'; }
+ elsif ($MDS == 2) { $dien_pav = 'Antradienis'; }
+ elsif ($MDS == 3) { $dien_pav = 'Tre&#0269;iadienis'; }
+ elsif ($MDS == 4) { $dien_pav = 'Ketvirtadienis'; }
+ elsif ($MDS == 5) { $dien_pav = 'Penktadienis'; }
+ elsif ($MDS == 6) { $dien_pav = '&#0352;e&#0353;tadienis'; }
+ elsif ($MDS == 0) { $dien_pav = 'Sekmadienis'; }
 
  return (duomenu_isvedimas($dien_pav,$koduote));
 }
