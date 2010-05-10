@@ -1,9 +1,9 @@
 --- #YAML:1.0
 name:               Metai-Kalendorius
-version:            0.05
+version:            0.06
 abstract:           Lithuanian calendar.
 author:
-    - Algirdas Rokas <algirdas@perl.lt>
+    - Algirdas R. <algirdas@perl.lt>
 license:            unknown
 distribution_type:  module
 configure_requires:

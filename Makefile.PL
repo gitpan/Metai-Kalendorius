@@ -7,6 +7,6 @@ WriteMakefile(
 	PREREQ_PM	=> {},
 	($] >= 5.005 ?
 	(ABSTRACT_FROM  => 'lib/Metai/Kalendorius.pm',
-	 AUTHOR         => 'Algirdas Rokas <algirdas@perl.lt>') : ()),
+	 AUTHOR         => 'Algirdas R. <algirdas@perl.lt>') : ()),
 );
 
